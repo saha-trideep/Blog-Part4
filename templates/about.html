@@ -1,0 +1,34 @@
+{% include "header.html" %}
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url({{ url_for('static', filename='img/about-bg.jpg')}})">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="page-heading">
+            <h1>About Me</h1>
+            <span class="subheading">This is what I do.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <p>Hi, I am Trideep Saha, I am a graduate in Physics and have been working in a production warehouse since 2016. I discover my passion for web development while taking a Python course in Udemy, it was my first step towards my career, and I am excited to exploring , learning and working in this field.</p>
+        <p>With the knowledge that I gained from this course, I built this project, my first hands-on blog site. It allows user to create blog posts and comment on other user’s post, all while using a tool called CKEditor to upload images.  Each user is also identified by a unique Gravatar image.</p>
+        <p>I used Flask 2.2.2, a lightweight Python web framework, and Flask-SQLALchemy, a SQL toolkit, later on upgrade SQLite to PostgreSQL, for the backend. For the front-end, I utilized Bootstrap-Flask and Bootstrap 4 to create a responsive design.</p>
+        <p>I am excited to continue work on this project to make it more user-friendly and visual appealing.
+        Some features I plane on adding in future include dynamic presentation, threaded comments, email subscription, and search engine optimization. I am thrilled to be starting my journey as a web developer and I am eager to continue learning and growing in this field.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  {% include "footer.html" %}

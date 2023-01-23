@@ -1,0 +1,87 @@
+{% from 'bootstrap/form.html' import render_form %}
+{% include "header.html" %}
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('{{post.img_url}}')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>{{post.title}}</h1>
+            <h2 class="subheading">{{post.subtitle}}</h2>
+            <span class="meta">Posted by
+              <a href="#">{{post.author.name}}</a>
+              on {{post.date}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Post Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            {{ post.body|safe }}
+          <hr>
+            {% if post.id == current_user.id %}
+            <div class="clearfix">
+            <a class="btn btn-primary float-right" href="{{url_for('edit_post', post_id=post.id)}}">Edit Post</a>
+            </div>
+            {% endif %}
+
+
+
+<!--           Comments Area -->
+
+          <div class="col-lg-8 col-md-10 mx-auto comment">
+            {% for message in get_flashed_messages() %}
+            <p style="color:green"> {{ message }}</p>
+            {% endfor %}
+            {% for comment in all_comments %}
+              <ul class="commentList">
+                <li>
+                    <div class="commenterImage">
+                      <img src={{comment.commenter.email|gravatar}}>
+                    </div>
+
+                    <div class="commentText">
+                      <p>{{ comment.area|safe }}</p>
+                      {% if current_user.name == comment.commenter.name %}
+                      <a  href="{{url_for('my_account', my_id=current_user.id)}}" >
+                        <span class="actual-user" style="color:green;">{{ comment.commenter.name }}</span>
+                      </a>
+                      {% else %}
+                        <span class="date sub-text" style="color:gray;">{{ comment.commenter.name }} {{ today }}</span>
+                      {% endif %}
+                      {% if current_user.is_authenticated and current_user.id == post.id %}
+                      <a href="{{url_for('comment_delete_confirm', comment_id=comment.id)}}">✘</a>
+                      {% endif %}
+                    </div>
+
+                </li>
+
+              </ul>
+            {% endfor %}
+            </div>
+          {% if current_user.is_authenticated %}
+              {{ render_form(comments_form, action=url_for('show_post', post_id=post.id), method='post', novalidate=True, button_map={"submit": "primary"}) }}
+              {{ ckeditor.load() }}
+              {{ ckeditor.config(name='text', height=200) }}
+          <div class="clearfix">
+          <a class="btn btn-outline-secondary float-right" href="{{url_for('get_all_posts')}}">Home</a>
+          </div>
+          {% else %}
+          <div class="clearfix">
+          <a class="btn btn-outline-secondary float-right" href="{{url_for('login')}}">Comment!</a>
+          </div>
+          {% endif %}
+          </div>
+      </div>
+    </div>
+  </article>
+
+  <hr>
+{% include "footer.html" %}

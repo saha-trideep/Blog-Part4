@@ -1,0 +1,36 @@
+{% include "header.html" %}
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('{{ url_for('static', filename='img/dog.jpg')}}')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+             <h2 class="subheading">Are you sure to delete this comment?</h2>
+            <span class="meta">Comment by
+              <a href="#">{{comment.commenter.name}}</a>
+               {{comment.area|safe}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Post Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <hr>
+            <form method="post" action="{{ url_for('delete_comment', author_id=comment.id) }}" style="padding-left:250px">
+
+              <input type="submit" value="Delete" class="btn btn-danger">
+              <a href="{{ url_for('show_post', post_id=comment.post_id) }}" class="btn btn-secondary">Cancel</a>
+
+            </form>
+          <hr>
+        </div>
+        </div>
+      </div>
+    <hr>
+  {% include "footer.html" %}

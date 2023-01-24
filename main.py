@@ -263,7 +263,7 @@ def about():
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     if not current_user.is_authenticated:
-        flash('Ops! click the below link')
+        flash('Click the below link')
         return render_template('401.html'), 401
     if request.method == "POST":
         user_name = request.form.get('name')

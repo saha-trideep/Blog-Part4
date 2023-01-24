@@ -10,7 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 import gunicorn
 from sqlalchemy.exc import IntegrityError
 
-from sqlalchemy.orm import relationship, declarative_base
+from sqlalchemy.orm import relationship
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm, AccountForm
 from flask_gravatar import Gravatar

@@ -15,9 +15,12 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm, AccountForm
 from flask_gravatar import Gravatar
 from functools import wraps
+from dotenv import load_dotenv
+
+load_dotenv('.env')
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 Bootstrap4(app)
 ckeditor = CKEditor(app)
@@ -48,6 +51,10 @@ gravatar = Gravatar(
     base_url=None
 
 )
+
+from_address = os.getenv('MY_EMAIL')
+password = os.getenv('PASSWORD')
+to_address = os.getenv('TO_ADDRESS')
 
 
 # CONFIGURE TABLES
@@ -256,8 +263,29 @@ def about():
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     if not current_user.is_authenticated:
-        flash('Click the below link')
+        flash('Ops! click the below link')
         return render_template('401.html'), 401
+    if request.method == "POST":
+        user_name = request.form.get('name')
+        user_email = request.form.get('email')
+        user_phone = request.form.get('phone')
+        user_message = request.form.get('message')
+        try:
+            with smtplib.SMTP('smtp.gmail.com') as connection:
+                connection.starttls()
+                connection.login(user=from_address, password=password)
+                connection.sendmail(
+                    from_addr=from_address,
+                    to_addrs=to_address,
+                    msg=f"Subject:Blog Response\n\nName:{user_name}\nEmail:{user_email}\n"
+                        f"Phone:{user_phone}\nMessage:'''{user_message}'''"
+                )
+
+                flash('Thank you! Message send successfully.')
+                redirect(url_for('get_all_posts'))
+        except smtplib.SMTPException as e:
+            flash(f"An error occurred :, {e}")
+            redirect(url_for('contact'))
     return render_template("contact.html")
 
 

@@ -360,5 +360,4 @@ def delete_post(post_id):
     return redirect(url_for('get_all_posts'))
 
 
-if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=5000, debug=True)
+

@@ -154,7 +154,7 @@ def register():
         except IntegrityError:
             flash('You have already sign up with this email. log in instead!')
             return redirect(url_for('login'))
-    return render_template("register.html", form=reg_form, current_user=current_user)
+    return render_template("register.html", form=reg_form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -183,7 +183,7 @@ def login():
                 login_user(user)
                 return redirect(url_for('get_all_posts', current_user=current_user))
 
-    return render_template("login.html", form=login_form, current_user=current_user)
+    return render_template("login.html", form=login_form)
 
 
 @app.route('/logout')
@@ -282,9 +282,9 @@ def contact():
     #             flash('Thank you! Message send successfully.')
     #             redirect(url_for('get_all_posts'))
     #     except smtplib.SMTPException as e:
-    #         flash(f"An error occurred :, {e}")
+    #         flash(f"An error occurred")
     #         redirect(url_for('contact'))
-    return render_template("contact.html", current_user=current_user)
+    return render_template("contact.html")
 
 
 @app.route("/new-post", methods=['GET', 'POST'])
@@ -308,7 +308,7 @@ def add_new_post():
         else:
             flash('Want to create Blog, Please register!')
             redirect(url_for('register'))
-    return render_template("make-post.html", form=form, current_user=current_user)
+    return render_template("make-post.html", form=form)
 
 
 # @app.route('/files/<filename>')
@@ -348,7 +348,7 @@ def edit_post(post_id):
         db.session.commit()
         return redirect(url_for("show_post", post_id=post.id))
 
-    return render_template("make-post.html", form=edit_form, is_edit=True, id=post_id, current_user=current_user)
+    return render_template("make-post.html", form=edit_form, is_edit=True, id=post_id)
 
 
 @app.route("/delete/<int:post_id>")

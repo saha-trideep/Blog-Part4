@@ -35,7 +35,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.session_protection = 'strong'
 
-Base = declarative_base()
+
 
 gravatar = Gravatar(
     app,
@@ -55,7 +55,7 @@ to_address = os.getenv('TO_ADDRESS')
 
 
 # CONFIGURE TABLES
-class User(UserMixin, db.Model, Base):
+class User(UserMixin, db.Model):
     __tablename__ = "user_details"
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True)
@@ -76,7 +76,7 @@ class User(UserMixin, db.Model, Base):
         return check_password_hash(self.password, password=password)
 
 
-class BlogPost(db.Model, Base):
+class BlogPost(db.Model):
     __tablename__ = "blog_posts"
 
     id = db.Column(db.Integer, primary_key=True)

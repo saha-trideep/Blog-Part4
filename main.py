@@ -20,7 +20,7 @@ from dotenv import load_dotenv
 load_dotenv('.env')
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['SECRET_KEY'] = "8BYkEfBA6O6donzWlSihBXox7C0sKR6b"
 
 Bootstrap4(app)
 ckeditor = CKEditor(app)
@@ -52,9 +52,9 @@ gravatar = Gravatar(
 
 )
 
-from_address = os.getenv('MY_EMAIL')
-password = os.getenv('PASSWORD')
-to_address = os.getenv('TO_ADDRESS')
+# from_address = os.getenv('MY_EMAIL')
+# password = os.getenv('PASSWORD')
+# to_address = os.getenv('TO_ADDRESS')
 
 
 # CONFIGURE TABLES
@@ -132,7 +132,7 @@ def user_load(user_id):
 @app.route('/')
 def get_all_posts():
     posts = BlogPost.query.all()
-    return render_template("index.html", all_posts=posts)
+    return render_template("index.html", all_posts=posts, current_user=current_user)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -156,7 +156,7 @@ def register():
         except IntegrityError:
             flash('You have already sign up with this email. log in instead!')
             return redirect(url_for('login'))
-    return render_template("register.html", form=reg_form)
+    return render_template("register.html", form=reg_form, current_user=current_user)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -185,7 +185,7 @@ def login():
                 login_user(user)
                 return redirect(url_for('get_all_posts', current_user=current_user))
 
-    return render_template("login.html", form=login_form)
+    return render_template("login.html", form=login_form, current_user=current_user)
 
 
 @app.route('/logout')
@@ -265,28 +265,28 @@ def contact():
     if not current_user.is_authenticated:
         flash('Click the below link')
         return render_template('401.html'), 401
-    if request.method == "POST":
-        user_name = request.form.get('name')
-        user_email = request.form.get('email')
-        user_phone = request.form.get('phone')
-        user_message = request.form.get('message')
-        try:
-            with smtplib.SMTP('smtp.gmail.com') as connection:
-                connection.starttls()
-                connection.login(user=from_address, password=password)
-                connection.sendmail(
-                    from_addr=from_address,
-                    to_addrs=to_address,
-                    msg=f"Subject:Blog Response\n\nName:{user_name}\nEmail:{user_email}\n"
-                        f"Phone:{user_phone}\nMessage:'''{user_message}'''"
-                )
-
-                flash('Thank you! Message send successfully.')
-                redirect(url_for('get_all_posts'))
-        except smtplib.SMTPException as e:
-            flash(f"An error occurred :, {e}")
-            redirect(url_for('contact'))
-    return render_template("contact.html")
+    # if request.method == "POST":
+    #     user_name = request.form.get('name')
+    #     user_email = request.form.get('email')
+    #     user_phone = request.form.get('phone')
+    #     user_message = request.form.get('message')
+    #     try:
+    #         with smtplib.SMTP('smtp.gmail.com') as connection:
+    #             connection.starttls()
+    #             connection.login(user=from_address, password=password)
+    #             connection.sendmail(
+    #                 from_addr=from_address,
+    #                 to_addrs=to_address,
+    #                 msg=f"Subject:Blog Response\n\nName:{user_name}\nEmail:{user_email}\n"
+    #                     f"Phone:{user_phone}\nMessage:'''{user_message}'''"
+    #             )
+    #
+    #             flash('Thank you! Message send successfully.')
+    #             redirect(url_for('get_all_posts'))
+    #     except smtplib.SMTPException as e:
+    #         flash(f"An error occurred :, {e}")
+    #         redirect(url_for('contact'))
+    return render_template("contact.html", current_user=current_user)
 
 
 @app.route("/new-post", methods=['GET', 'POST'])
@@ -310,7 +310,7 @@ def add_new_post():
         else:
             flash('Want to create Blog, Please register!')
             redirect(url_for('register'))
-    return render_template("make-post.html", form=form)
+    return render_template("make-post.html", form=form, current_user=current_user)
 
 
 # @app.route('/files/<filename>')
@@ -350,7 +350,7 @@ def edit_post(post_id):
         db.session.commit()
         return redirect(url_for("show_post", post_id=post.id))
 
-    return render_template("make-post.html", form=edit_form, is_edit=True, id=post_id)
+    return render_template("make-post.html", form=edit_form, is_edit=True, id=post_id, current_user=current_user)
 
 
 @app.route("/delete/<int:post_id>")

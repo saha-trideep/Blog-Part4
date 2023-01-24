@@ -6,9 +6,9 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-          {% for post in all_posts %}
+
           <div class="site-heading">
-            <h1>{{ post.author.name }}'Blog</h1>
+            <h1>Trideep'Blog</h1>
             <span class="subheading">A collection of random musings.</span>
           </div>
         </div>
@@ -20,7 +20,7 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-
+        {% for post in all_posts %}
         <div class="post-preview">
           <a href="{{ url_for('show_post', post_id=post.id) }}">
             <h2 class="post-title">

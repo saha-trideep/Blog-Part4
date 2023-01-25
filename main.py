@@ -19,13 +19,13 @@ from functools import wraps
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = "8BYkEfBA6O6donzWlSihBXox7C0sKR6b"
+app.config['SECRET_KEY'] = "SECRET_KEY"
 
 Bootstrap4(app)
 ckeditor = CKEditor(app)
 # CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'DATABASE_URI'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['CKEDITOR_SERVE_LOCAL'] = True
 app.config['CKEDITOR_HEIGHT'] = 400
@@ -51,9 +51,9 @@ gravatar = Gravatar(
 
 )
 
-# from_address = os.getenv('MY_EMAIL')
-# password = os.getenv('PASSWORD')
-# to_address = os.getenv('TO_ADDRESS')
+from_address = os.getenv('FROM_ADDRESS')
+password = os.getenv('PASSWORD')
+to_address = os.getenv('TO_ADDRESS')
 
 
 # CONFIGURE TABLES

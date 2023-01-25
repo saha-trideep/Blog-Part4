@@ -124,7 +124,7 @@ def admin_only(f):
 
 @login_manager.user_loader
 def user_load(user_id):
-    return User.query.get(user_id)
+    return User.query.get(int(user_id))
 
 
 @app.route('/')

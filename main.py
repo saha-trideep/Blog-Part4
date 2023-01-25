@@ -124,13 +124,13 @@ def admin_only(f):
 
 @login_manager.user_loader
 def user_load(user_id):
-    return User.query.get(int(user_id))
+    return User.query.get(user_id)
 
 
 @app.route('/')
 def get_all_posts():
     posts = BlogPost.query.all()
-    return render_template("index.html", all_posts=posts, current_user=current_user)
+    return render_template("index.html", all_posts=posts)
 
 
 @app.route('/register', methods=['GET', 'POST'])

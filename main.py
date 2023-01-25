@@ -24,7 +24,11 @@ app.config['SECRET_KEY'] = "SECRET_KEY"
 Bootstrap4(app)
 ckeditor = CKEditor(app)
 # CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI', 'sqlite:///blog.db')
+uri = os.getenv('DATABASE_URI')
+if uri.startswith('postgres://'):
+    uri = uri.replace('postgres://', 'postgresql://', 1)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(uri, 'sqlite:///blog.db')
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['CKEDITOR_SERVE_LOCAL'] = True

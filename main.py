@@ -51,9 +51,9 @@ gravatar = Gravatar(
 )
 
 load_dotenv('.env')
-from_address = os.environ.get('MY_EMAIL')
-password = os.environ.get('PASSWORD')
-to_address = os.environ.get('TO_ADDRESS')
+from_address = os.getenv('MY_EMAIL')
+password = os.getenv('PASSWORD')
+to_address = os.getenv('TO_ADDRESS')
 
 
 # CONFIGURE TABLES

@@ -22,7 +22,7 @@ https://github.com/saha-trideep/trideep-blog.git
 
 Prerequisites 
 >   Python 3.x
->   Other dependencies are listed are listed requirements.txt file.
+>   Other dependencies are listed requirements.txt file.
 
 
 

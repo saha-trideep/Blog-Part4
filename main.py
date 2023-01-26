@@ -16,7 +16,7 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm, AccountForm
 from flask_gravatar import Gravatar
 from functools import wraps
-
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
@@ -38,8 +38,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.session_protection = 'strong'
 
-
-
 gravatar = Gravatar(
     app,
     size=100,
@@ -52,9 +50,10 @@ gravatar = Gravatar(
 
 )
 
-from_address = os.getenv('FROM_ADDRESS')
-password = os.getenv('PASSWORD')
-to_address = os.getenv('TO_ADDRESS')
+load_dotenv('.env')
+from_address = os.environ.get('MY_EMAIL')
+password = os.environ.get('PASSWORD')
+to_address = os.environ.get('TO_ADDRESS')
 
 
 # CONFIGURE TABLES
@@ -271,7 +270,7 @@ def contact():
         user_phone = request.form.get('phone')
         user_message = request.form.get('message')
         try:
-            with smtplib.SMTP('smtp.gmail.com') as connection:
+            with smtplib.SMTP(host='smtp.gmail.com', port=587) as connection:
                 connection.starttls()
                 connection.login(user=from_address, password=password)
                 connection.sendmail(

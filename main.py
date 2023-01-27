@@ -126,13 +126,15 @@ class Comment(db.Model):
     parent_post = relationship('BlogPost', back_populates='all_comments')
 
 
+with app.app_context():
+    db.create_all()
+
 data = sqlite_session.query(BlogPost).all()
 for row in data:
     postgres_session.add(row)
 postgres_session.commit()
 
-with app.app_context():
-    db.create_all()
+
 
 
 def admin_only(f):

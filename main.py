@@ -1,7 +1,6 @@
 import os
 import smtplib
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+
 from flask import Flask, render_template, redirect, url_for, flash, request, send_from_directory
 from flask_bootstrap import Bootstrap4
 from flask_ckeditor import CKEditor
@@ -27,28 +26,14 @@ Bootstrap4(app)
 ckeditor = CKEditor(app)
 # CONNECT TO DB
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URI", "sqlite:///blog.db")
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///blog.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['CKEDITOR_SERVE_LOCAL'] = True
 app.config['CKEDITOR_HEIGHT'] = 400
 # app.config['CKEDITOR_FILE_UPLOADER'] = 'upload'
 
 db = SQLAlchemy(app)
-
-sqlite_engine = create_engine("sqlite:///blog.db")
-sqlite_session = sessionmaker(bind=sqlite_engine)()
-
-postgres_engine = create_engine(os.getenv("DATABASE_URI"))
-postgres_session = sessionmaker(bind=postgres_engine)()
-
-
-
-
-
-
-
-
 
 
 login_manager = LoginManager()
@@ -128,12 +113,6 @@ class Comment(db.Model):
 
 with app.app_context():
     db.create_all()
-
-data = sqlite_session.query(BlogPost).all()
-for row in data:
-    postgres_session.add(row)
-postgres_session.commit()
-
 
 
 

@@ -131,8 +131,8 @@ for row in data:
     postgres_session.add(row)
 postgres_session.commit()
 
-# with app.app_context():
-#     db.create_all()
+with app.app_context():
+    db.create_all()
 
 
 def admin_only(f):

@@ -17,7 +17,6 @@ from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm, AccountF
 from flask_gravatar import Gravatar
 from functools import wraps
 from dotenv import load_dotenv
-
 load_dotenv('.env')
 
 app = Flask(__name__)
@@ -36,6 +35,7 @@ app.config['CKEDITOR_HEIGHT'] = 400
 
 db = SQLAlchemy(app)
 
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.session_protection = 'strong'
@@ -51,6 +51,7 @@ gravatar = Gravatar(
     base_url=None
 
 )
+
 
 from_address = os.getenv('MY_EMAIL')
 password = os.getenv('PASSWORD')
@@ -114,6 +115,7 @@ with app.app_context():
     db.create_all()
 
 
+
 def admin_only(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -151,7 +153,6 @@ def register():
 
             if current_user.id:
                 user.is_admin = True
-            flash("You cannot change your email address. Visit account. ")
             return redirect(url_for('get_all_posts'))
 
         except IntegrityError:
@@ -166,16 +167,26 @@ def login():
     if login_form.validate_on_submit():
         user = User.query.filter_by(email=login_form.email.data).first()
         if user is None:
-            flash("Email not found. Please register.")
+            user = User()
+            user.email = login_form.email.data
+            user.name = 'New user'
+            user.set_password(login_form.password.data)
+            user.is_admin = False
+            db.session.add(user)
+            db.session.commit()
+            login_user(user)
+            flash("You cannot change your email address! Please do remember your password. ")
+            return redirect(url_for('get_all_posts', current_user=user))
 
         else:
-            if user.check_password(login_form.password.data):
-
-                login_user(user)
-                return redirect(url_for('get_all_posts', current_user=current_user))
+            if user.email != login_form.email.data or user.check_password(login_form.password.data):
+                flash('May be this email address incorrect! Please try again.')
+            elif user.email == login_form.email.data or not user.check_password(login_form.password.data):
+                flash('May be password incorrect! Sorry.')
 
             else:
-                flash("Incorrect password. please try again.")
+                login_user(user)
+                return redirect(url_for('get_all_posts', current_user=current_user))
 
     return render_template("login.html", form=login_form)
 
@@ -221,7 +232,7 @@ def my_account(my_id):
         user.name = account_form.name.data
         user.set_password(account_form.password.data)
         db.session.commit()
-        flash(f'Hey, {user.name};  your name & password has been changed. Please do remember password.')
+        flash(f'Hey, {user.name};  your name & password has been changed.')
         return redirect(url_for('my_account', my_id=my_id, name=user.name))
 
     return render_template('my_account.html', form=account_form)

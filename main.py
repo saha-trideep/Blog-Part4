@@ -166,7 +166,7 @@ def login():
     if login_form.validate_on_submit():
         user = User.query.filter_by(email=login_form.email.data).first()
         if user is None:
-            flash("Email nor found. Please register.")
+            flash("Email not found. Please register.")
 
         else:
             if user.check_password(login_form.password.data):

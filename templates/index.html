@@ -51,7 +51,7 @@
         <hr>
 
         <!-- New Post -->
-        {% if   current_user.is_authenticated or current_user.id == post.id %}
+        {% if   current_user.is_authenticated and current_user.id == post.id %}
         <div class="clearfix">
 
           <a class="btn btn-primary float-right" href="{{url_for('add_new_post')}}">Create New Post</a>

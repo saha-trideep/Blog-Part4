@@ -151,7 +151,7 @@ def register():
 
             if current_user.id:
                 user.is_admin = True
-            flash("You cannot change your email address! Please do remember your password. ")
+            flash("You cannot change your email address. Visit account. ")
             return redirect(url_for('get_all_posts'))
 
         except IntegrityError:
@@ -221,7 +221,7 @@ def my_account(my_id):
         user.name = account_form.name.data
         user.set_password(account_form.password.data)
         db.session.commit()
-        flash(f'Hey, {user.name};  your name & password has been changed.')
+        flash(f'Hey, {user.name};  your name & password has been changed. Please do remember password.')
         return redirect(url_for('my_account', my_id=my_id, name=user.name))
 
     return render_template('my_account.html', form=account_form)

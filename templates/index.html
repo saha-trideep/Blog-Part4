@@ -37,6 +37,7 @@
           <p class="post-meta">Posted by
             <a href="#">{{ post.author.name }}</a>
             on {{post.date}}
+            {% endfor %}
             {% if current_user.is_authenticated and current_user.id == post.id %}
             <a href="{{url_for('delete_post', post_id=post.id) }}">✘</a>
             {% endif %}
@@ -58,7 +59,7 @@
 
         </div>
         {% endif %}
-        {% endfor %}
+
       </div>
     </div>
   </div>

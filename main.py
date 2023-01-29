@@ -17,6 +17,7 @@ from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm, AccountF
 from flask_gravatar import Gravatar
 from functools import wraps
 from dotenv import load_dotenv
+
 load_dotenv('.env')
 
 app = Flask(__name__)
@@ -25,8 +26,9 @@ app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 Bootstrap4(app)
 ckeditor = CKEditor(app)
 # CONNECT TO DB
+uri = os.getenv("DATABASE_URI")
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///blog.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(uri, "sqlite:///blog.db")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['CKEDITOR_SERVE_LOCAL'] = True
@@ -34,7 +36,6 @@ app.config['CKEDITOR_HEIGHT'] = 400
 # app.config['CKEDITOR_FILE_UPLOADER'] = 'upload'
 
 db = SQLAlchemy(app)
-
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -51,7 +52,6 @@ gravatar = Gravatar(
     base_url=None
 
 )
-
 
 from_address = os.getenv('MY_EMAIL')
 password = os.getenv('PASSWORD')
@@ -113,7 +113,6 @@ class Comment(db.Model):
 
 with app.app_context():
     db.create_all()
-
 
 
 def admin_only(f):

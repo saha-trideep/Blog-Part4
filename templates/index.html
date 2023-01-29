@@ -49,8 +49,10 @@
           {% endif %}
         </div>
         <hr>
+        {% endfor %}
 
         <!-- New Post -->
+        {% for post in all_posts %}
         {% if   current_user.is_authenticated or current_user.id == post.id %}
         <div class="clearfix">
 
@@ -59,6 +61,7 @@
         </div>
         {% endif %}
         {% endfor %}
+
       </div>
     </div>
   </div>

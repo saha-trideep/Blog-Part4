@@ -171,7 +171,7 @@ def login():
             return redirect(url_for('get_all_posts', current_user=user))
 
         else:
-            if user.check_password(login_form.password):
+            if user.check_password(login_form.password.data):
                 login_user(user)
                 return redirect(url_for('get_all_posts', current_user=current_user))
             else:

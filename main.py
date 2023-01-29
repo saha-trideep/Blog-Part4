@@ -152,6 +152,7 @@ def register():
 
             if current_user.id:
                 user.is_admin = True
+                flash("Make sure you do not forgot your password. Visit account.")
             return redirect(url_for('get_all_posts'))
 
         except IntegrityError:
@@ -166,27 +167,15 @@ def login():
     if login_form.validate_on_submit():
         user = User.query.filter_by(email=login_form.email.data).first()
         if user is None:
-            user = User()
-            user.email = login_form.email.data
-            user.name = 'New user'
-            user.set_password(login_form.password.data)
-            user.is_admin = False
-            db.session.add(user)
-            db.session.commit()
-            login_user(user)
-            flash("You cannot change your email address! Please do remember your password. ")
+            flash("Email not found. Please register.")
             return redirect(url_for('get_all_posts', current_user=user))
 
         else:
-            if user.email != login_form.email.data or user.check_password(login_form.password.data):
-                flash('May be this email address incorrect! Please try again.')
-            elif user.email == login_form.email.data or not user.check_password(login_form.password.data):
-                flash('May be password incorrect! Sorry.')
-
-            else:
+            if user.check_password(login_form.password):
                 login_user(user)
                 return redirect(url_for('get_all_posts', current_user=current_user))
-
+            else:
+                flash("Incorrect password. Please try again.")
     return render_template("login.html", form=login_form)
 
 
@@ -292,7 +281,6 @@ def contact():
 
 
 @app.route("/new-post", methods=['GET', 'POST'])
-@login_required
 @admin_only
 def add_new_post():
     form = CreatePostForm()

@@ -40,7 +40,7 @@
             {% if current_user.is_authenticated and current_user.id == post.id %}
             <a href="{{url_for('delete_post', post_id=post.id) }}">✘</a>
             {% endif %}
-
+            {% endfor %}
           </p>
           {% if not current_user.is_authenticated %}
           <div class="clearfix">
@@ -49,7 +49,7 @@
           {% endif %}
         </div>
         <hr>
-        {% endfor %}
+
 
         <!-- New Post -->
 

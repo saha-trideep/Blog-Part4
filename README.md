@@ -1,18 +1,9 @@
 # Welcome to Blog-site
-This is a blogging platform where user can register and login to post their own blog or comments other's blog post, created using Flask web framework, Python.
 
-
-Features
->   Users can register and login to the platform
->   Registered user can post their own blogs and comments other blog post.
->   Only registered user can see thier name on blog and comments they posted.
->   If a user only logged in can posts comments and see the comments, but their name will not appear.
->   Some edit and delete option for post author.
-
+This blog project was written in Python and the Flask framework. The front-end design is implemented using Bootstrap. The data is stored in SQLite data base and SQLALchemy is used for data base operations. passwords are hashed and salted for added security. The project includes an admin account, allowning certain functionalities such ads adding, editing, deleting posts. The 'Contact' tab allows registred users to send an email form directly to my inbox using the smtplib module and the 'SMTP' protocol.
 
 Live Demo
 >   You can access a live demo of the application by going to this link:https://clean-blog-c7g3.onrender.com
-
 
 
 Getting Started
@@ -23,7 +14,6 @@ https://github.com/saha-trideep/trideep-blog.git
 Prerequisites 
 >   Python 3.x
 >   Other dependencies are listed requirements.txt file.
-
 
 
 Contributing 
